@@ -1,0 +1,2 @@
+# This directory is for robot mesh files (STL, DAE, etc.)
+# Currently using simple geometric shapes in URDF, so no meshes are needed.

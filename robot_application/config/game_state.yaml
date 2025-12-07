@@ -1,0 +1,10 @@
+game_state_manager:
+  ros__parameters:
+    # Match configuration
+    match_duration_sec: 180.0       # 3 minutes
+    auto_start: false               # Manually start match
+    
+    # Phase thresholds (seconds remaining)
+    early_phase_threshold: 60.0     # >60s = EARLY
+    mid_phase_threshold: 30.0       # 30-60s = MID
+    late_phase_threshold: 10.0      # 10-30s = LATE, <10s = ENDGAME
