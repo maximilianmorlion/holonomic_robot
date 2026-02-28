@@ -10,13 +10,6 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
-    # Launch arguments
-    mission_type_arg = DeclareLaunchArgument(
-        'mission_type',
-        default_value='patrol',
-        description='Mission type: patrol, pick_place, or teleop'
-    )
-    
     # Include Nav2 bringup (assuming it's in robot_bringup)
     nav2_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
@@ -69,11 +62,41 @@ def generate_launch_description():
         ]
     )
     
+    # Game state manager node
+    game_state_manager_node = Node(
+        package='robot_application',
+        executable='game_state_manager',
+        name='game_state_manager',
+        output='screen',
+        parameters=[
+            PathJoinSubstitution([
+                FindPackageShare('robot_application'),
+                'config',
+                'game_state.yaml'
+            ])
+        ]
+    )
+    
+    # Task planner node
+    task_planner_node = Node(
+        package='robot_application',
+        executable='task_planner',
+        name='task_planner',
+        output='screen',
+        parameters=[
+            PathJoinSubstitution([
+                FindPackageShare('robot_application'),
+                'config',
+                'task_planner.yaml'
+            ])
+        ]
+    )
+    
     return LaunchDescription([
-        mission_type_arg,
         nav2_launch,
         hardware_launch,
         servo_controller_node,
-        pump_controller_node
-        # Mission-specific nodes would be launched separately
+        pump_controller_node,
+        game_state_manager_node,
+        task_planner_node
     ])
